@@ -42,13 +42,15 @@ int main() {
     int i = 0;
     bool running = true;
 
-    while (running) {
+    while (parent->pid != 0 && child->pid != 0) {
 
         Sleep(1.0);
         i++; 
 
+        // pointless to add if(j>=25) since both processes stop on same iteration
         if (i >= 50) { 
-            running = false;
+            parent->pid = 0;
+            child->pid = 0;
         } 
 
         // print parent 
