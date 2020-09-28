@@ -40,7 +40,6 @@ int main() {
     Process* parent = new Process(2, "message from parent process");
 
     int i = 0;
-    bool running = true;
 
     while (parent->pid != 0 && child->pid != 0) {
 

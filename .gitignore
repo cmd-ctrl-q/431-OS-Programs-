@@ -12,6 +12,7 @@ A2/*
 *.doc 
 *.pdf
 Diepenbrock/
+Resources/
 
 # cpp 
 a.out 
