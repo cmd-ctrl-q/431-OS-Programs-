@@ -1,0 +1,17 @@
+
+
+
+# editors, editor packages, etc 
+*.vscode 
+
+# temporary 
+A2/*
+
+# documents, etc. 
+*.docx
+*.doc 
+*.pdf
+
+# cpp 
+a.out 
+

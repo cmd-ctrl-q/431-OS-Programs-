@@ -1,0 +1,14 @@
+program loop2;
+int sum, j, k;
+int av;
+sum = 1;
+for j = 1 to 10;
+      for k = 1 to 10;
+            sum = sum + 1;
+next next
+av = sum/j;
+print(sum);
+print(j);
+print(k);
+print(av);
+stop; end;
