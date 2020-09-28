@@ -39,28 +39,25 @@ int main() {
     Process* child = new Process(1, "message from child process");
     Process* parent = new Process(2, "message from parent process");
 
-    int i, j = 1;
+    int i = 0;
     bool running = true;
 
     while (running) {
 
         Sleep(1.0);
+        i++; 
 
-        if ((i >= 50) || (j >= 25)) { // parent done 
+        if (i >= 50) { 
             running = false;
         } 
 
         // print parent 
-        std::cout << i << ". " << parent->message << std::endl;
-        i++;
+        std::cout << i << "s " << parent->message << std::endl;
 
         // print child
-        if (i%2 == 0) {
-            std::cout << i << ". " << child->message << std::endl;
-            j++;
+        if (float(i%2) == 0.0) {
+            std::cout << i << "s " << child->message << std::endl;
         }
     }
-
-
     return 0; 
 }
