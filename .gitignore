@@ -6,6 +6,8 @@
 
 # temporary 
 A2/*
+!A2/Scheduler*
+!A2/Main*
 
 # documents, etc. 
 *.docx
