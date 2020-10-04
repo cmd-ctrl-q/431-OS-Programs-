@@ -28,8 +28,10 @@ int main() {
     scheduler->makePCB(105, 30, 5);
     scheduler->makePCB(106, 35, 10);
 
-    // scheduler->printlist(1);
-    scheduler->FCFS(); 
-    // scheduler->printlist(5);
-    
+    scheduler->printlist(1);    // print before algo
+    scheduler->FCFS();          // run algo
+    scheduler->printlist(0);    // print after algo 
+
+    scheduler->printlist(6);    // art 
+    scheduler->printlist(7);    // att
 }
