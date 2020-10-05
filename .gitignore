@@ -8,6 +8,7 @@
 A2/*
 !A2/Scheduler*
 !A2/Main*
+!A2/PCB*
 
 # documents, etc. 
 *.docx
