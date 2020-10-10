@@ -44,26 +44,42 @@ class Scheduler {
             }
         }
 
-        void switchstate(int opt, int arrival) {
+        void switchstate(int opt, int arrival, int cpuburst) {
 
             list <PCB*> :: iterator it; 
             switch(opt)
             {
             case 1: // from new state to ready state
                 for(it = this->newstate.begin(); it != this->newstate.end(); ++it) {
-                    if((*it)->tArrival == arrival) {
-                        this->readystate.push_back(*it);
-                        // delete from prev state the process that was transfered 
-                        this->newstate.erase(it);
-                    }
+                    // FCFS
+                    if(arrival != -1) {
+                        if((*it)->tArrival == arrival) {
+                            this->readystate.push_back(*it);
+                            // delete from prev state the process that was transfered 
+                            this->newstate.erase(it);
+                        }
+                    } 
+
                 }
                 break;
             case 2: // from ready state to running state
                 // runningstate = this->readystate.front();
                 if(this->readystate.size() != 0) {
-                    it = this->readystate.begin(); 
-                    this->runningstate.push_back(*it);
-                    this->readystate.erase(it);
+                    // FCFS
+                    if(arrival != -1) {
+                        it = this->readystate.begin(); 
+                        this->runningstate.push_back(*it);
+                        this->readystate.erase(it);
+                    }
+                    // SJF
+                    if(cpuburst != -1) {
+                        
+                        if((*it)->cpuBurst == cpuburst) {
+                            this->runningstate.push_back(*it);
+                            // delete from prev state the process that was transfered 
+                            this->newstate.erase(it);
+                        }
+                    }
                 } 
                 break;
             case 3: // from running state to waiting state
@@ -94,23 +110,13 @@ class Scheduler {
             }
         }
 
-        // average response time 
-        // void findart(int timeinq, int arrival) {
-        //     art += double(timeinq - arrival)/4.0;
-        // }
-
-        // // average turnaround time 
-        // void findatt(int completiontime, int arrival) {
-        //     att += double(completiontime - arrival)/4.0;
-        // }
-
     public:
 
         // --------- FIELDS --------- 
         int size;                   // number of processes in scheduler
         int currtotalburst;         // current total cpu bursts
-        double art;             // average response time 
-        double att;             // verage turnaround time
+        double art;                 // average response time 
+        double att;                 // average turnaround time
         list <PCB*> newstate;       //1
         list <PCB*> runningstate;   //2
         list <PCB*> readystate;     //3
@@ -136,60 +142,91 @@ class Scheduler {
             this->att = 0;
             std::string _state = ""; 
             int _burst;         // individual cpu bursts
-            int _arrival = 0;   // i think same thing as total cpu bursts
+            int _arrival = 0; 
             int option = 0;
             bool running = true;
 
-            // todo: update pcb properties (eg completion, etc)
             while(running) { 
 
-                // loop through newstate, add processes to readystate
+                // newstate -> readystate
                 if(this->newstate.size() != 0) {
                     for(int i = 0; i < newstate.size(); i++) {
-                        this->switchstate(1, _arrival);
+                        this->switchstate(1, _arrival, -1);
                     }
                 }
-
                 // ready -> run              
-                this->switchstate(2, _arrival);
+                this->switchstate(2, _arrival, -1);
 
-                // loop based on cpu burst for the process in runningstate 
                 if(this->runningstate.size() != 0) {
                     _burst = this->runningstate.front()->cpuBurst;
                     // update pcb's initial time in running q
                     this->runningstate.front()->tInitial = currtotalburst; 
-                    // find art 
-                    // this->findart(currtotalburst, _arrival); // may keep
                     for(int i = 0; i < _burst; i++) {
-                        // add some job
-
+                        // add some job here
                         // try and update ready states
                         if(this->newstate.size() > 0) {
-                            this->switchstate(1, ++_arrival);
+                            this->switchstate(1, ++_arrival, -1);
                         }
                         this->currtotalburst++; 
                     }
                     // update same pcb's completion time out of running q
                     this->runningstate.front()->tCompletion = currtotalburst; 
-                    // find att 
-                    // findatt(currtotalburst, _arrival);
-                    // running->terminated
-                    this->switchstate(5, _arrival); 
+                    this->switchstate(5, _arrival, -1); 
                 } 
-
-                // printf("\n\n newstate");
-                // this->printlist(1);
-                // printf("\n\n readystate");
-                // this->printlist(2);
-                // printf("\n\n runningstate");
-                // this->printlist(3);
-                // printf("\n\n terminatedstate");
-                // this->printlist(5);
-
                 // if terminatedstate is empty, all processes are done
                 running = this->allterm(); 
             } 
         }
+
+        void SFJ_NP() {
+            this->art = 0;
+            this->att = 0;
+            std::string _state = ""; 
+            int _burst;         // individual cpu bursts
+            int _arrival = 0; 
+            int option = 0;
+            bool running = true;
+            list <PCB*> :: iterator it; 
+
+            while(running) {
+
+                // add processes to readystate based on their arrival time
+                // newstate -> readystate
+                if(this->newstate.size() != 0) {
+                    for(int i = 0; i < newstate.size(); i++) { 
+                        // add first process to readystate then to runningstate
+                        if(i == 0) {
+                            this->switchstate(1, _arrival, -1); // to readystate
+                            this->switchstate(2, _arrival, -1); // to runningstate
+                        } else {
+                            this->switchstate(1, _arrival, -1);
+                        }
+                    }
+                }
+
+                // loop through processes in readystate and add to runningstate
+                // based on cpuburst and if there is already a process in runningstate
+                if(this->readystate.size() != 0) {
+
+                    if(this->runningstate.size() == 0) {
+                        // add next shortest burst process from readystate to runningstate
+                        it = this->readystate.begin();
+                        _burst = (*it)->cpuBurst; 
+                        for(it; it != this->readystate.end(); ++it) {
+                            if((*it)->cpuBurst < _burst) {
+                                _burst = (*it)->cpuBurst;
+                            }
+                        }
+                        // move smallest cpuburst process to runningstate 
+                        this->switchstate(2, -1, _burst);
+                    } else { // else if size != 0
+                        // else increment burst 
+                        _burst = this->runningstate.front()->cpuBurst;
+                    }
+                }
+            }
+        }
+
 
         void printlist(int i) {
 

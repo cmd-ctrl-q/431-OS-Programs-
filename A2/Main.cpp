@@ -17,9 +17,7 @@ c. Round Robin (preemptive)
 
 using namespace std;
 
-int main() { 
-
-    Scheduler* scheduler = new Scheduler(7); 
+void restart(Scheduler* scheduler) {
     scheduler->makePCB(100, 0, 10); // (pid, arrival time, cpu burst)
     scheduler->makePCB(101, 6, 10); 
     scheduler->makePCB(102, 8, 4);
@@ -27,11 +25,28 @@ int main() {
     scheduler->makePCB(104, 19, 15);
     scheduler->makePCB(105, 30, 5);
     scheduler->makePCB(106, 35, 10);
+}
 
+int main() { 
+
+// FCFS
+
+    Scheduler* scheduler = new Scheduler(7); 
+    restart(scheduler);
     scheduler->printlist(1);    // print before algo
     scheduler->FCFS();          // run algo
     scheduler->printlist(0);    // print after algo 
 
     scheduler->printlist(6);    // art 
     scheduler->printlist(7);    // att
+
+// SJF_NP 
+    cout << "----------" << endl;
+    // restart(scheduler);
+    Scheduler* scheduler2 = new Scheduler(7);
+    scheduler2->printlist(1); // print before
+    scheduler2->SFJ_NP();
+    scheduler2->printlist(0); // print after 
+
+
 }

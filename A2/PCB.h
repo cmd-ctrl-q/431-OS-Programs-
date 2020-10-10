@@ -19,7 +19,6 @@ class PCB {
         
         // --------- CONSTRUCTORS ---------
         PCB(int pid, int arrival, int burst) {
-            // this->pid = rand() % 999999 + 100000;   // create pid
             this->pid = pid;
             this->state = "New";
             this->tArrival = arrival;
