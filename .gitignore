@@ -12,15 +12,13 @@ A2/*
 !A2/Final*
 
 # documents, etc. 
-*.docx
-*.doc 
-*.pdf
-*.png
-*.jpg
-Diepenbrock/
-Resources/
-OTHER/
-A4/P4_CMPS431/
+**/.docx
+**/*.doc 
+**/*.pdf
+**/*.png
+**/*.jpg
+**/Resources/
+**/OTHER/
 
 
 # cpp 
