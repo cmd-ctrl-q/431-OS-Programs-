@@ -15,9 +15,13 @@ A2/*
 *.docx
 *.doc 
 *.pdf
+*.png
+*.jpg
 Diepenbrock/
 Resources/
 OTHER/
+A4/P4_CMPS431/
+
 
 # cpp 
 a.out 
