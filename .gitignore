@@ -14,13 +14,7 @@ A2/*
 # documents, etc. 
 **/.docx
 **/*.doc 
-**/*.pdf
-**/*.png
-**/*.jpg
 **/Resources/
 **/OTHER/
 
-
-# cpp 
-a.out 
 
