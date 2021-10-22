@@ -4,13 +4,6 @@
 # editors, editor packages, etc 
 *.vscode 
 
-# temporary 
-A2/*
-!A2/Scheduler*
-!A2/Main*
-!A2/PCB*
-!A2/Final*
-
 # documents, etc. 
 **/.docx
 **/*.doc 
